@@ -6,14 +6,13 @@ WORKDIR /usr/src/app
 
 # Install app dependencies by copying
 # package.json and package-lock.json
-COPY ./udagram-api-user/package*.json ./
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
-RUN npm install bcrypt
 
 # Copy app source
-COPY ./udagram-api-user .
+COPY . .
 
 # Bind the port that the image will run on
 EXPOSE 8080
