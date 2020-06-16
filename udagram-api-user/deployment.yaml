@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-api-user
+  labels:
+    app: my-api-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-api-user
+  template:
+    metadata:
+      labels:
+        app: my-api-user
+    spec:
+      containers:
+      - name: udagram-api-user
+        image: stevenchang219/udagram-api-user
+        ports:
+        - containerPort: 8080
+        env:
+          - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: env-secret
+                key: POSTGRES_USERNAME
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: env-secret
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: env-config           # The ConfigMap this value comes from.
+                key: POSTGRES_HOST         # The key to fetch.
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: env-config           # The ConfigMap this value comes from.
+                key: POSTGRES_DB         # The key to fetch.
+          - name: AWS_BUCKET
+            valueFrom:
+              configMapKeyRef:
+                name: env-config           # The ConfigMap this value comes from.
+                key: AWS_BUCKET         # The key to fetch.
+          - name: AWS_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: env-config           # The ConfigMap this value comes from.
+                key: AWS_REGION         # The key to fetch.
+          - name: AWS_PROFILE
+            valueFrom:
+              configMapKeyRef:
+                name: env-config           # The ConfigMap this value comes from.
+                key: AWS_PROFILE         # The key to fetch.
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: env-secret
+                key: JWT_SECRET
+          - name: URL
+            valueFrom:
+              configMapKeyRef:
+                name: env-config           # The ConfigMap this value comes from.
+                key: URL                    # The key to fetch.
