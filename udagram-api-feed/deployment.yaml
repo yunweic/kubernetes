@@ -5,7 +5,7 @@ metadata:
   labels:
     app: my-api-feed
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: my-api-feed
@@ -64,4 +64,12 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: env-config           # The ConfigMap this value comes from.
-                key: URL                    # The key to fetch.
+                key: URL                   # The key to fetch.
+        volumeMounts:
+          - name: aws-secret
+            mountPath: "/root/.aws/"
+            readOnly: true
+      volumes:
+        - name: aws-secret
+          secret:
+            secretName: aws-secret
